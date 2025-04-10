@@ -1,9 +1,9 @@
-package com.example.ecommerce_app.model;
+package com.example.ecommerce_app.Model;
 
 import jakarta.persistence.*;
 //
 @Entity
-@Table(name = "cart_item")
+@Table(name = "cart_items")
 public class CartItem {
 
     @Id

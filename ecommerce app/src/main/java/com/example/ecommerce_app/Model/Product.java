@@ -1,9 +1,7 @@
-package com.example.ecommerce_app.model;
+package com.example.ecommerce_app.Model;
 
 
 import jakarta.persistence.*;
-
-import java.util.List;
 
 @Entity
 @Table(name = "Product")
@@ -31,15 +29,29 @@ public class Product {
     @Column(name = "category", nullable = false)
     private String category;
 
-    @OneToMany(mappedBy = "product")
-    private List<CartItem> cartItems;
+//    @OneToMany(mappedBy = "product")
+//    private List<CartItem> cartItems;
 
-    public List<CartItem> getCartItems() {
-        return cartItems;
+    public Product(String name, double price, int quantity, String description, String imageURL, String category) {
+        this.name = name;
+        this.price = price;
+        this.quantity = quantity;
+        this.description = description;
+        this.imageURL = imageURL;
+        this.category = category;
+//        this.cartItems = cartItems;
     }
-    public void setCartItems(List<CartItem> cartItems) {
-        this.cartItems = cartItems;
+
+    public Product() {
+
     }
+
+//    public List<CartItem> getCartItems() {
+//        return cartItems;
+//    }
+//    public void setCartItems(List<CartItem> cartItems) {
+//        this.cartItems = cartItems;
+//    }
 
     public String getCategory() {
         return category;
