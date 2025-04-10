@@ -1,4 +1,4 @@
-package com.example.ecommerce_app.model;
+package com.example.ecommerce_app.Model;
 
 import jakarta.persistence.*;
 
