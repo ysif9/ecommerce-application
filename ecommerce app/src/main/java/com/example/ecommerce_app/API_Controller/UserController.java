@@ -43,7 +43,7 @@ public class UserController {
         return "User registered successfully";
     }
 
-    @GetMapping // get all the users
+    @GetMapping("/allUsers") // get all the users
     public List<LocalUser> getAllUsers() {
         return userService.getAllUsers();
     }
