@@ -1,7 +1,7 @@
 package com.example.ecommerce_app.model;
 
 import jakarta.persistence.*;
-//
+
 @Entity
 @Table(name = "cart_item")
 public class CartItem {
