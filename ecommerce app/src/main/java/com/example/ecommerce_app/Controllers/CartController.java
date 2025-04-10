@@ -24,42 +24,41 @@ public class CartController {
     }
 
     // Get Cart Details for user (currently user is hardcoded, should update when auth is added)
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("")
-    public ResponseEntity<CartResponse> getUserCart() {
+    public CartResponse getUserCart() {
         LocalUser user = localUserService.getUserById(1L);
         Cart cart = cartService.getCartByUser(user);
-        return ResponseEntity.ok(cartService.mapToDTO(cart));
+        return cartService.mapToDTO(cart);
     }
 
     // Add item to cart
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/items")
-    public ResponseEntity<CartResponse> addItemToCart(@RequestParam Long productId, @RequestParam int quantity) {
+    public CartResponse addItemToCart(@RequestParam Long productId, @RequestParam int quantity) {
         LocalUser user = localUserService.getUserById(1L); // later get from auth
 
         Cart cart = cartService.addItemToCart(user, productId, quantity);
-        CartResponse cartResponse = cartService.mapToDTO(cart);
 
-        return ResponseEntity.ok(cartResponse);
+        return cartService.mapToDTO(cart);
     }
 
     // Get item details
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/items/{id}")
-    public ResponseEntity<CartItemResponse> getItemDetails(@PathVariable Long id) {
+    public CartItemResponse getItemDetails(@PathVariable Long id) {
         CartItem itemDetails = cartService.getItemDetails(id);
 
-        CartItemResponse cartItemResponse = cartService.mapToResponse(itemDetails);
-
-        return ResponseEntity.ok(cartItemResponse);
+        return cartService.mapToResponse(itemDetails);
     }
 
     // Update item quantity
+    @ResponseStatus(HttpStatus.OK)
     @PostMapping("/items/{id}")
-    public ResponseEntity<CartItemResponse> updateItemQuantity(@PathVariable Long id, @RequestParam int quantity ) {
+    public CartItemResponse updateItemQuantity(@PathVariable Long id, @RequestParam int quantity ) {
         CartItem item = cartService.updateItem(id, quantity);
 
-        CartItemResponse cartItemResponse = cartService.mapToResponse(item);
-
-        return ResponseEntity.ok(cartItemResponse);
+        return cartService.mapToResponse(item);
     }
 
     // Remove item from cart
@@ -76,6 +75,5 @@ public class CartController {
         LocalUser user = localUserService.getUserById(1L); // later get from auth
         cartService.clearCart(user);
     }
-
 
 }
