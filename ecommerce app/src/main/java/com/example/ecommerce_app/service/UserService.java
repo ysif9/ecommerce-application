@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.ecommerce_app.model.LocalUser;
 import com.example.ecommerce_app.repository.UserRepository;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,6 +17,9 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+
     public String registerUser(LocalUser user) {
         if (userRepository.existsByEmail(user.getEmail())) {
             return "Email already registered.";
@@ -24,10 +29,11 @@ public class UserService {
             return "Username already taken.";
         }
 
-        if (user.getPassword() == null || user.getPassword().isEmpty()) {
+        if (user.getPassword() == null || user.getPassword().length() < 6) {
             return "Password is required.";
         }
 
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setCreatedAt(LocalDateTime.now());
         userRepository.save(user);
         return "User registered successfully.";
@@ -58,12 +64,28 @@ public class UserService {
 
     // Basic login logic
     public boolean loginWithEmail(String email, String password) {
-        return userRepository.existsByEmailAndPassword(email, password);
+        Optional<LocalUser> optionalUser = userRepository.findByEmail(email);
+
+        if (optionalUser.isPresent()) {
+            LocalUser user = optionalUser.get();
+            return passwordEncoder.matches(password, user.getPassword());
+        }
+
+        return false;
     }
 
+
     public boolean loginWithUsername(String username, String password) {
-        return userRepository.existsByUsernameAndPassword(username, password);
+        Optional<LocalUser> optionalUser = userRepository.findByUsername(username);
+
+        if (optionalUser.isPresent()) {
+            LocalUser user = optionalUser.get();
+            return passwordEncoder.matches(password, user.getPassword());
+        }
+
+        return false;
     }
+
 
     public String resetPassword(String email, String oldPassword, String newPassword) {
         Optional<LocalUser> optionalUser = userRepository.findByEmail(email);
@@ -81,7 +103,7 @@ public class UserService {
             return "New password must be at least 6 characters";
         }
 
-        user.setPassword(newPassword);
+        user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
         return "Password reset successfully";
     }
