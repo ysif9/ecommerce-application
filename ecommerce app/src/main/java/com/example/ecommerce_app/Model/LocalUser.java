@@ -1,4 +1,4 @@
-package com.example.ecommerce_app.model;
+package com.example.ecommerce_app.Model;
 
 
 import jakarta.persistence.*;
@@ -39,6 +39,22 @@ public class LocalUser {
 
     @Column(name = "phone_number", nullable = false, unique = true)
     private String phoneNumber;
+
+    public LocalUser(String username, String password, String email, String firstName, String lastName, String address, LocalDateTime createdAt, String role, String phoneNumber) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.createdAt = createdAt;
+        this.role = role;
+        this.phoneNumber = phoneNumber;
+    }
+
+    public LocalUser() {
+
+    }
 
     public String getPhoneNumber() {
         return phoneNumber;
