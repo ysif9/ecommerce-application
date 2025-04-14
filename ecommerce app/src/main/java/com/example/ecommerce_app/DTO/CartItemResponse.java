@@ -34,6 +34,15 @@ public class CartItemResponse {
         this.price = price;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    private Long id;
     private Long productId;
     private String productName;
     private int quantity;

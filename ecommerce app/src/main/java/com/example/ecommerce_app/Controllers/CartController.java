@@ -1,14 +1,13 @@
 package com.example.ecommerce_app.Controllers;
 
-import com.example.ecommerce_app.DTO.CartResponse;
 import com.example.ecommerce_app.DTO.CartItemResponse;
-import com.example.ecommerce_app.Services.CartService;
-import com.example.ecommerce_app.Services.LocalUserService;
+import com.example.ecommerce_app.DTO.CartResponse;
 import com.example.ecommerce_app.Model.Cart;
 import com.example.ecommerce_app.Model.CartItem;
 import com.example.ecommerce_app.Model.LocalUser;
+import com.example.ecommerce_app.Services.CartService;
+import com.example.ecommerce_app.Services.LocalUserService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -54,7 +53,7 @@ public class CartController {
 
     // Update item quantity
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/items/{id}")
+    @PatchMapping("/items/{id}")
     public CartItemResponse updateItemQuantity(@PathVariable Long id, @RequestParam int quantity ) {
         CartItem item = cartService.updateItem(id, quantity);
 

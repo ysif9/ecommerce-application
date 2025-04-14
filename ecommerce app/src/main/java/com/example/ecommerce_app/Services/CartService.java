@@ -32,6 +32,7 @@ public class CartService {
 
     public CartItemResponse mapToResponse(CartItem cartItem) {
         CartItemResponse response = new CartItemResponse();
+        response.setId(cartItem.getCartItem_id());
         response.setProductId(cartItem.getProduct().getProductID());
         response.setProductName(cartItem.getProduct().getName());
         response.setPrice(cartItem.getProduct().getPrice());
