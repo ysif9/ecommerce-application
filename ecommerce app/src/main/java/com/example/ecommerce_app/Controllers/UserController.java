@@ -1,14 +1,12 @@
-package com.example.ecommerce_app.API_Controller;
+package com.example.ecommerce_app.Controllers;
 
-import com.example.ecommerce_app.model.*;
-import com.example.ecommerce_app.repository.*;
-import com.example.ecommerce_app.service.UserService;
+import com.example.ecommerce_app.Model.*;
+import com.example.ecommerce_app.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
@@ -78,12 +76,7 @@ public class UserController {
 
     @GetMapping("/display-UserDetails/{id}") //display user details
     public LocalUser getUserDetails(@PathVariable Long id) {
-        LocalUser user = userService.getUserById(id);
-        if (user == null) {
-            return null;
-        }else {
-            return user;
-        }
+        return userService.getUserById(id);
     }
 
     @DeleteMapping("/delete/{id}") //delete user

@@ -1,9 +1,9 @@
-package com.example.ecommerce_app.service;
+package com.example.ecommerce_app.Services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.example.ecommerce_app.model.LocalUser;
-import com.example.ecommerce_app.repository.UserRepository;
+import com.example.ecommerce_app.Model.LocalUser;
+import com.example.ecommerce_app.Repositories.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 

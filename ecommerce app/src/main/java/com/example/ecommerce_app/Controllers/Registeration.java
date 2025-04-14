@@ -1,4 +1,4 @@
-package com.example.ecommerce_app.API_Controller;
+package com.example.ecommerce_app.Controllers;
 
 public class Registeration {
     private String email;

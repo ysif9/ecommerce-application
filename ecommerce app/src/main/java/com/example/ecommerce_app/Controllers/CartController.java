@@ -6,7 +6,7 @@ import com.example.ecommerce_app.Model.Cart;
 import com.example.ecommerce_app.Model.CartItem;
 import com.example.ecommerce_app.Model.LocalUser;
 import com.example.ecommerce_app.Services.CartService;
-import com.example.ecommerce_app.Services.LocalUserService;
+import com.example.ecommerce_app.Services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,18 +15,18 @@ import org.springframework.web.bind.annotation.*;
 public class CartController {
 
     private final CartService cartService;
-    private final LocalUserService localUserService;
+    private final UserService userService;
 
-    public CartController(CartService cartService, LocalUserService localUserService) {
+    public CartController(CartService cartService, UserService userService) {
         this.cartService = cartService;
-        this.localUserService = localUserService;
+        this.userService = userService;
     }
 
     // Get Cart Details for user (currently user is hardcoded, should update when auth is added)
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("")
     public CartResponse getUserCart() {
-        LocalUser user = localUserService.getUserById(1L);
+        LocalUser user = userService.getUserById(1L);
         Cart cart = cartService.getCartByUser(user);
         return cartService.mapToDTO(cart);
     }
@@ -35,7 +35,7 @@ public class CartController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/items")
     public CartResponse addItemToCart(@RequestParam Long productId, @RequestParam int quantity) {
-        LocalUser user = localUserService.getUserById(1L); // later get from auth
+        LocalUser user = userService.getUserById(1L); // later get from auth
 
         Cart cart = cartService.addItemToCart(user, productId, quantity);
 
@@ -71,7 +71,7 @@ public class CartController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("")
     public void clearCart() {
-        LocalUser user = localUserService.getUserById(1L); // later get from auth
+        LocalUser user = userService.getUserById(1L); // later get from auth
         cartService.clearCart(user);
     }
 

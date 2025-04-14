@@ -1,6 +1,6 @@
-package com.example.ecommerce_app.repository;
+package com.example.ecommerce_app.Repositories;
 
-import com.example.ecommerce_app.model.LocalUser;
+import com.example.ecommerce_app.Model.LocalUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
