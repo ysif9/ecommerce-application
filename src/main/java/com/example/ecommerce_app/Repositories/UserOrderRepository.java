@@ -1,7 +1,7 @@
 package com.example.ecommerce_app.Repositories;
 
-import com.example.ecommerce_app.model.UserOrder;
-import com.example.ecommerce_app.model.LocalUser;
+import com.example.ecommerce_app.Model.UserOrder;
+import com.example.ecommerce_app.Model.LocalUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 

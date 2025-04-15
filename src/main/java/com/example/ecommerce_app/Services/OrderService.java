@@ -1,7 +1,7 @@
 package com.example.ecommerce_app.Services;
 
-import com.example.ecommerce_app.model.*;
-import com.example.ecommerce_app.repository.*;
+import com.example.ecommerce_app.Model.*;
+import com.example.ecommerce_app.Repositories.*;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;

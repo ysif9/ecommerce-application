@@ -1,7 +1,7 @@
 package com.example.ecommerce_app.Controllers;
 
-import com.example.ecommerce_app.model.*;
-import com.example.ecommerce_app.services.OrderService;
+import com.example.ecommerce_app.Model.*;
+import com.example.ecommerce_app.Services.OrderService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
