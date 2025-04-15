@@ -1,4 +1,4 @@
-package com.example.ecommerce_app.API.controller;
+package com.example.ecommerce_app.Controllers;
 
 import com.example.ecommerce_app.model.*;
 import com.example.ecommerce_app.services.OrderService;

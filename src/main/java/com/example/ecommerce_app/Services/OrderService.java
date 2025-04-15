@@ -1,4 +1,4 @@
-package com.example.ecommerce_app.services;
+package com.example.ecommerce_app.Services;
 
 import com.example.ecommerce_app.model.*;
 import com.example.ecommerce_app.repository.*;

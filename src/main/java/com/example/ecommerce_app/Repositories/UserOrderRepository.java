@@ -1,4 +1,4 @@
-package com.example.ecommerce_app.repository;
+package com.example.ecommerce_app.Repositories;
 
 import com.example.ecommerce_app.model.UserOrder;
 import com.example.ecommerce_app.model.LocalUser;
