@@ -13,9 +13,9 @@ public class UserOrder {
     @Column(name = "OrderID", nullable = false, unique = true)
     private long orderID;
 // identifier ID and relation with Cartitem
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
 
     @ManyToOne
     private LocalUser user;

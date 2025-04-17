@@ -31,7 +31,7 @@ public class CartController {
         return cartService.mapToDTO(cart);
     }
 
-    // Add item to cart
+    // Add item to the cart
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/items")
     public CartResponse addItemToCart(@RequestParam Long productId, @RequestParam int quantity) {
@@ -60,7 +60,7 @@ public class CartController {
         return cartService.mapToResponse(item);
     }
 
-    // Remove item from cart
+    // Remove item from the cart
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/items/{id}")
     public void removeItem(@PathVariable Long id) {
