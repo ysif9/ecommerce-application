@@ -63,28 +63,34 @@ public class UserService {
     }
 
     // Basic login logic
-    public boolean loginWithEmail(String email, String password) {
+    public LocalUser loginWithEmail(String email, String password) {
         Optional<LocalUser> optionalUser = userRepository.findByEmail(email);
 
         if (optionalUser.isPresent()) {
             LocalUser user = optionalUser.get();
-            return passwordEncoder.matches(password, user.getPassword());
+            if (passwordEncoder.matches(password, user.getPassword())) {
+                return user;  // Return the actual user on successful login
+            }
         }
 
-        return false;
+        return null; // Login failed
     }
 
 
-    public boolean loginWithUsername(String username, String password) {
+
+    public LocalUser loginWithUsername(String username, String password) {
         Optional<LocalUser> optionalUser = userRepository.findByUsername(username);
 
         if (optionalUser.isPresent()) {
             LocalUser user = optionalUser.get();
-            return passwordEncoder.matches(password, user.getPassword());
+            if (passwordEncoder.matches(password, user.getPassword())) {
+                return user;  // Return the actual user on successful login
+            }
         }
 
-        return false;
+        return null; // Login failed
     }
+
 
 
     public String resetPassword(String email, String oldPassword, String newPassword) {
