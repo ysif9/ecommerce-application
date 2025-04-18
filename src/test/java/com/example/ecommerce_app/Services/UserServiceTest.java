@@ -1,9 +1,10 @@
-package com.example.ecommerce_app.ServiceUnitTest;
+package com.example.ecommerce_app.Services;
 
-import com.example.ecommerce_app.model.LocalUser;
-import com.example.ecommerce_app.repository.UserRepository;
-import com.example.ecommerce_app.service.UserService;
-import org.junit.jupiter.api.*;
+import com.example.ecommerce_app.Model.LocalUser;
+import com.example.ecommerce_app.Repositories.UserRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
