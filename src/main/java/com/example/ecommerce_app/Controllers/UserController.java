@@ -48,7 +48,7 @@ public class UserController {
 
     @PostMapping("/login/email") // check login function using email
     public String loginWithEmail(@RequestParam String email, @RequestParam String password) {
-        if (userService.loginWithEmail(email, password)) {
+        if (userService.loginWithEmail(email, password) != null) {
             return "Login successful";
         } else {
             return "Invalid email or password";
@@ -57,7 +57,7 @@ public class UserController {
 
     @PostMapping("/login/username") //login with username
     public String loginWithUsername(@RequestParam String username, @RequestParam String password) {
-        if (userService.loginWithUsername(username, password)) {
+        if (userService.loginWithUsername(username, password) != null) {
             return "Login successful";
         } else {
             return "Invalid username or password";
@@ -79,7 +79,7 @@ public class UserController {
         return userService.getUserById(id);
     }
 
-    @DeleteMapping("/delete/{id}") //delete user
+    @DeleteMapping("/delete/{id}") //delete user by id
     public String deleteUser(@PathVariable Long id) {
         return userService.deleteUser(id);
     }
