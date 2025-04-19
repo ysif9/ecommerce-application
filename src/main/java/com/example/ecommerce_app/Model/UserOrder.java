@@ -1,21 +1,23 @@
 package com.example.ecommerce_app.Model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Data
+@AllArgsConstructor
 @Entity
 @Table(name = "User_order")
+@NoArgsConstructor
 public class UserOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "OrderID", nullable = false, unique = true)
     private long orderID;
-// identifier ID and relation with Cartitem
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long id;
 
     @ManyToOne
     private LocalUser user;
@@ -28,33 +30,4 @@ public class UserOrder {
     private String status; // pending, completed, canceled, etc.
 
     private LocalDateTime orderDate;
-// same getters and setters
-    public LocalUser getUser() {
-        return user;
-    }
-    public void setUser(LocalUser user) {
-        this.user = user;
-    }
-
-    public long getOrderID() {
-        return orderID;
-    }
-    public void setOrderID(long orderID) {
-        this.orderID = orderID;
-    }
-
-    public void setItems(List<CartItem> cartItems) {
-    }
-
-    public void setOrderDate(LocalDateTime now) {
-    }
-
-    public void setStatus(String pending) {
-    }
-
-    public void setTotalPrice(double total) {
-    }
-
-    public void setId(Long id) {
-    }
 }

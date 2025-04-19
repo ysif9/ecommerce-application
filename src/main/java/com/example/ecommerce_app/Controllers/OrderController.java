@@ -4,6 +4,7 @@ import com.example.ecommerce_app.Model.CartItem;
 import com.example.ecommerce_app.Model.LocalUser;
 import com.example.ecommerce_app.Model.UserOrder;
 import com.example.ecommerce_app.Services.AuthService;
+import com.example.ecommerce_app.Services.CartService;
 import com.example.ecommerce_app.Services.OrderService;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -16,10 +17,12 @@ public class OrderController {
 
     private final OrderService orderService;
     private final AuthService authService;
+    private final CartService cartService;
 
-    public OrderController(OrderService orderService, AuthService authService) {
+    public OrderController(OrderService orderService, AuthService authService, CartService cartService) {
         this.orderService = orderService;
         this.authService = authService;
+        this.cartService = cartService;
     }
 
     // GET /api/orders
@@ -46,7 +49,7 @@ public class OrderController {
     // PUT /api/orders/{id}
     @PutMapping("/{id}")
     public UserOrder updateOrder(@PathVariable Long id, @RequestBody UserOrder updatedOrder) {
-        updatedOrder.setId(id);
+        updatedOrder.setOrderID(id);
         return orderService.updateOrder(updatedOrder);
     }
 
@@ -58,7 +61,6 @@ public class OrderController {
 
 
     private List<CartItem> getCartItemsFromUser(LocalUser user) {
-        // TODO: get the items from the Cart entity of this user
-        return List.of(); // placeholder
+        return cartService.getCartByUser(user).getItems();
     }
 }
