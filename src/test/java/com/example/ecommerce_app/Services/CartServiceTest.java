@@ -2,7 +2,10 @@ package com.example.ecommerce_app.Services;
 
 import com.example.ecommerce_app.DTO.CartItemResponse;
 import com.example.ecommerce_app.DTO.CartResponse;
-import com.example.ecommerce_app.Model.*;
+import com.example.ecommerce_app.Model.Cart;
+import com.example.ecommerce_app.Model.CartItem;
+import com.example.ecommerce_app.Model.LocalUser;
+import com.example.ecommerce_app.Model.Product;
 import com.example.ecommerce_app.Repositories.CartItemRepository;
 import com.example.ecommerce_app.Repositories.CartRepository;
 import com.example.ecommerce_app.Repositories.ProductRepository;
@@ -14,7 +17,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -58,7 +60,7 @@ class CartServiceTest {
         cartItem.setQuantity(2);
 
         cart = new Cart();
-        cart.setID(1L);
+        cart.setId(1L);
         cart.setUser(user);
         cart.getItems().add(cartItem);
         cartItem.setCart(cart);
@@ -79,7 +81,7 @@ class CartServiceTest {
         CartResponse response = cartService.mapToDTO(cart);
         
         assertEquals(user.getID(), response.getUserId());
-        assertEquals(cart.getID(), response.getId());
+        assertEquals(cart.getId(), response.getId());
         assertEquals(1, response.getItems().size());
         
         CartItemResponse itemResponse = response.getItems().getFirst();

@@ -55,4 +55,11 @@ public class LocalUser {
         this.role = role;
         this.phoneNumber = phoneNumber;
     }
+
+    public long getID(){
+        return id;
+    }
+    public void setID(long id){
+        this.id = id;
+    }
 }
