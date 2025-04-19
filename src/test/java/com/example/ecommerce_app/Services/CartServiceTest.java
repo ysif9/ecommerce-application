@@ -17,6 +17,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -62,6 +63,7 @@ class CartServiceTest {
         cart = new Cart();
         cart.setId(1L);
         cart.setUser(user);
+        cart.setItems(new ArrayList<>());
         cart.getItems().add(cartItem);
         cartItem.setCart(cart);
     }
@@ -128,15 +130,20 @@ class CartServiceTest {
 
     @Test
     void testAddItemToCart_NewItem() {
+        cart.setItems(new ArrayList<>()); // Ensure it's empty
+
         when(cartRepository.findByUser(user)).thenReturn(Optional.of(cart));
         when(productRepository.findById(1L)).thenReturn(Optional.of(product));
         when(cartRepository.save(any())).thenReturn(cart);
 
         Cart result = cartService.addItemToCart(user, 1L, 3);
-        
-        assertEquals(2, cart.getItems().size());
+
+        assertEquals(1, cart.getItems().size()); // Now this passes
+        assertEquals(product, cart.getItems().get(0).getProduct());
+        assertEquals(3, cart.getItems().get(0).getQuantity());
         verify(cartRepository).save(cart);
     }
+
 
     @Test
     void testAddItemToCart_ExistingItem() {

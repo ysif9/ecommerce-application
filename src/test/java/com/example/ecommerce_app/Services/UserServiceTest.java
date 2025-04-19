@@ -21,8 +21,12 @@ class UserServiceTest {
     @Mock
     private UserRepository userRepository;
 
+    @Mock
+    private BCryptPasswordEncoder passwordEncoder;
+
     @InjectMocks
     private UserService userService;
+
 
     private LocalUser user;
 
@@ -45,11 +49,16 @@ class UserServiceTest {
     void registerUser_success() {
         when(userRepository.existsByEmail(user.getEmail())).thenReturn(false);
         when(userRepository.existsByUsername(user.getUsername())).thenReturn(false);
+        when(passwordEncoder.encode(anyString())).thenReturn("encodedPassword");
+
         user.setPassword("validPass123");
+
         String result = userService.registerUser(user);
+
         assertEquals("User registered successfully.", result);
         verify(userRepository).save(any(LocalUser.class));
     }
+
 
     @Test
     @DisplayName("2: Test a failed case of registration by email")
@@ -113,23 +122,33 @@ class UserServiceTest {
     @DisplayName("9: Test successful case of login using email")
     void loginWithEmail_success() {
         String rawPassword = "12345678";
-        user.setPassword(new BCryptPasswordEncoder().encode(rawPassword));
+        user.setPassword("encodedPassword");
+
         when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
+        when(passwordEncoder.matches(rawPassword, "encodedPassword")).thenReturn(true);
+
         LocalUser result = userService.loginWithEmail(user.getEmail(), rawPassword);
+
         assertNotNull(result);
         assertEquals(user.getEmail(), result.getEmail());
     }
+
 
     @Test
     @DisplayName("10: Test successful case of login using username")
     void loginWithUsername_success() {
         String rawPassword = "12345678";
-        user.setPassword(new BCryptPasswordEncoder().encode(rawPassword));
+        user.setPassword("encodedPassword");
+
         when(userRepository.findByUsername(user.getUsername())).thenReturn(Optional.of(user));
+        when(passwordEncoder.matches(rawPassword, "encodedPassword")).thenReturn(true);
+
         LocalUser result = userService.loginWithUsername(user.getUsername(), rawPassword);
+
         assertNotNull(result);
         assertEquals(user.getUsername(), result.getUsername());
     }
+
 
     @Test
     @DisplayName("11: Test failure case of login using email")
@@ -150,8 +169,9 @@ class UserServiceTest {
     @Test
     @DisplayName("13: Test failure case of login using password in email")
     void loginWithEmail_wrongPassword() {
-        user.setPassword(new BCryptPasswordEncoder().encode("correctPass"));
+        user.setPassword("encodedPassword");
         when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
+        when(passwordEncoder.matches("wrongPass", "encodedPassword")).thenReturn(false);
         LocalUser result = userService.loginWithEmail(user.getEmail(), "wrongPass");
         assertNull(result);
     }
@@ -159,8 +179,9 @@ class UserServiceTest {
     @Test
     @DisplayName("14: Test failure case of login using password in username")
     void loginWithUsername_wrongPassword() {
-        user.setPassword(new BCryptPasswordEncoder().encode("correctPass"));
+        user.setPassword("encodedPassword");
         when(userRepository.findByUsername(user.getUsername())).thenReturn(Optional.of(user));
+        when(passwordEncoder.matches("wrongPass", "encodedPassword")).thenReturn(false);
         LocalUser result = userService.loginWithUsername(user.getUsername(), "wrongPass");
         assertNull(result);
     }
@@ -201,10 +222,10 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("19: Reset password success")
+    @DisplayName("19: Test reset password")
     void resetPassword_success() {
         user.setPassword("oldPass");
-        when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
+        when(userService.getUserByEmail(user.getEmail())).thenReturn(Optional.of(user));
         String result = userService.resetPassword(user.getEmail(), "oldPass", "newStrongPassword");
         assertEquals("Password reset successfully", result);
     }
