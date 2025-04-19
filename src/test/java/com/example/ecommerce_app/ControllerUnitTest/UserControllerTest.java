@@ -1,8 +1,8 @@
 package com.example.ecommerce_app.ControllerUnitTest;
 
-import com.example.ecommerce_app.API_Controller.UserController;
-import com.example.ecommerce_app.model.LocalUser;
-import com.example.ecommerce_app.service.UserService;
+import com.example.ecommerce_app.Controllers.UserController;
+import com.example.ecommerce_app.Model.LocalUser;
+import com.example.ecommerce_app.Services.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
