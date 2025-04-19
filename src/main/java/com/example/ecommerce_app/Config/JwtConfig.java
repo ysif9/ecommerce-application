@@ -1,4 +1,4 @@
-package com.example.ecommerce_app;
+package com.example.ecommerce_app.Config;
 
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
 import org.springframework.beans.factory.annotation.Value;

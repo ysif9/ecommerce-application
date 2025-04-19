@@ -20,21 +20,21 @@ public class DataLoader implements CommandLineRunner {
     private final CartRepository cartRepository;
     private final UserRepository localUserRepository;
     private final ProductRepository productRepository;
-    private final PasswordEncoder passwordEncoder2;
+    private final PasswordEncoder passwordEncoder;
 
-    public DataLoader(CartRepository cartRepository, UserRepository localUserRepository, ProductRepository productRepository, PasswordEncoder passwordEncoder2) {
+    public DataLoader(CartRepository cartRepository, UserRepository localUserRepository, ProductRepository productRepository, PasswordEncoder passwordEncoder) {
         this.cartRepository = cartRepository;
         this.localUserRepository = localUserRepository;
         this.productRepository = productRepository;
-        this.passwordEncoder2 = passwordEncoder2;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         // Create sample user
         LocalUser myuser = new LocalUser(
                 "username",
-                passwordEncoder2.encode("password"),
+                passwordEncoder.encode("password"),
                 "email@example.com",
                 "John",
                 "Doe",

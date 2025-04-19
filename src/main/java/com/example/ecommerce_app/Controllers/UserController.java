@@ -1,19 +1,26 @@
 package com.example.ecommerce_app.Controllers;
 
-import com.example.ecommerce_app.Model.*;
+import com.example.ecommerce_app.DTO.AuthRequest;
+import com.example.ecommerce_app.DTO.AuthResponse;
+import com.example.ecommerce_app.Model.LocalUser;
+import com.example.ecommerce_app.Services.AuthService;
 import com.example.ecommerce_app.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private AuthService authService;
 
     @PostMapping("/register") // register a new user
     public String register(@RequestBody LocalUser user) {
@@ -47,20 +54,24 @@ public class UserController {
     }
 
     @PostMapping("/login/email") // check login function using email
-    public String loginWithEmail(@RequestParam String email, @RequestParam String password) {
-        if (userService.loginWithEmail(email, password) != null) {
-            return "Login successful";
+    public Optional<AuthResponse> loginWithEmail(@RequestParam String email, @RequestParam String password) {
+        LocalUser user = userService.loginWithEmail(email, password);
+        if (user != null) {
+            return Optional.ofNullable(authService.authenticate(new AuthRequest(user.getUsername(), user.getPassword())));
+//            return "Login successful";
         } else {
-            return "Invalid email or password";
+            return Optional.empty();
         }
     }
 
     @PostMapping("/login/username") //login with username
-    public String loginWithUsername(@RequestParam String username, @RequestParam String password) {
+    public ResponseEntity<?> loginWithUsername(@RequestParam String username, @RequestParam String password) {
         if (userService.loginWithUsername(username, password) != null) {
-            return "Login successful";
+            var response = authService.authenticate(new AuthRequest(username, password));
+            return ResponseEntity.ok(response);
+//            return "Login successful";
         } else {
-            return "Invalid username or password";
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
         }
     }
 

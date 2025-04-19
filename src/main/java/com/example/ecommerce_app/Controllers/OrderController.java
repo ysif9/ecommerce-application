@@ -1,7 +1,11 @@
 package com.example.ecommerce_app.Controllers;
 
-import com.example.ecommerce_app.Model.*;
+import com.example.ecommerce_app.Model.CartItem;
+import com.example.ecommerce_app.Model.LocalUser;
+import com.example.ecommerce_app.Model.UserOrder;
+import com.example.ecommerce_app.Services.AuthService;
 import com.example.ecommerce_app.Services.OrderService;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,15 +15,17 @@ import java.util.List;
 public class OrderController {
 
     private final OrderService orderService;
+    private final AuthService authService;
 
-    public OrderController(OrderService orderService) {
+    public OrderController(OrderService orderService, AuthService authService) {
         this.orderService = orderService;
+        this.authService = authService;
     }
 
     // GET /api/orders
     @GetMapping
-    public List<UserOrder> getOrders(@RequestParam(required = false) String status) {
-        LocalUser user = getCurrentUser(); // Replace with actual logic
+    public List<UserOrder> getOrders(Authentication authentication, @RequestParam(required = false) String status) {
+        LocalUser user = authService.getUserFromAuthentication(authentication);
         return orderService.getOrdersByUser(user, status);
     }
 
@@ -31,8 +37,8 @@ public class OrderController {
 
     // POST /api/orders
     @PostMapping
-    public UserOrder placeOrder() {
-        LocalUser user = getCurrentUser();
+    public UserOrder placeOrder(Authentication authentication) {
+        LocalUser user = authService.getUserFromAuthentication(authentication);
         List<CartItem> cartItems = getCartItemsFromUser(user); // implement this logic
         return orderService.placeOrder(user, cartItems);
     }
@@ -50,10 +56,6 @@ public class OrderController {
         orderService.deleteOrder(id);
     }
 
-    private LocalUser getCurrentUser() {
-        // TODO: replace with Spring Security or session logic
-        return new LocalUser(); // placeholder
-    }
 
     private List<CartItem> getCartItemsFromUser(LocalUser user) {
         // TODO: get the items from the Cart entity of this user

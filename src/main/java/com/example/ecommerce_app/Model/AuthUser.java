@@ -1,5 +1,6 @@
 package com.example.ecommerce_app.Model;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -7,10 +8,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
+@Getter
 @RequiredArgsConstructor
 public class AuthUser implements UserDetails {
 
     private final LocalUser user;
+
+    public LocalUser getUser() {
+        return user;
+    }
 
     @Override
     public String getUsername() {
