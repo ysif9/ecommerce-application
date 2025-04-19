@@ -2,9 +2,13 @@ package com.example.ecommerce_app.Model;
 
 
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+@NoArgsConstructor
+@Data
 @Entity
 @Table(name = "Local_user")
 public class LocalUser {
@@ -51,80 +55,4 @@ public class LocalUser {
         this.role = role;
         this.phoneNumber = phoneNumber;
     }
-
-    public LocalUser() {
-
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public String getRole() {
-        return role;
-    }
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public long getID(){
-        return id;
-    }
-    public void setID(long id){
-        this.id = id;
-    }
-
-
 }
