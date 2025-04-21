@@ -5,9 +5,10 @@ import com.example.ecommerce_app.DTO.CartResponse;
 import com.example.ecommerce_app.Model.Cart;
 import com.example.ecommerce_app.Model.CartItem;
 import com.example.ecommerce_app.Model.LocalUser;
+import com.example.ecommerce_app.Services.AuthService;
 import com.example.ecommerce_app.Services.CartService;
-import com.example.ecommerce_app.Services.UserService;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,18 +16,18 @@ import org.springframework.web.bind.annotation.*;
 public class CartController {
 
     private final CartService cartService;
-    private final UserService userService;
+    private final AuthService authService;
 
-    public CartController(CartService cartService, UserService userService) {
+    public CartController(CartService cartService, AuthService authService) {
         this.cartService = cartService;
-        this.userService = userService;
+        this.authService = authService;
     }
 
     // Get Cart Details for user (currently user is hardcoded, should update when auth is added)
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("")
-    public CartResponse getUserCart() {
-        LocalUser user = userService.getUserById(1L);
+    public CartResponse getUserCart(Authentication authentication) {
+        LocalUser user = authService.getUserFromAuthentication(authentication);
         Cart cart = cartService.getCartByUser(user);
         return cartService.mapToDTO(cart);
     }
@@ -34,8 +35,8 @@ public class CartController {
     // Add item to the cart
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/items")
-    public CartResponse addItemToCart(@RequestParam Long productId, @RequestParam int quantity) {
-        LocalUser user = userService.getUserById(1L); // later get from auth
+    public CartResponse addItemToCart(Authentication authentication, @RequestParam Long productId, @RequestParam int quantity) {
+        LocalUser user = authService.getUserFromAuthentication(authentication);
 
         Cart cart = cartService.addItemToCart(user, productId, quantity);
 
@@ -54,7 +55,7 @@ public class CartController {
     // Update item quantity
     @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/items/{id}")
-    public CartItemResponse updateItemQuantity(@PathVariable Long id, @RequestParam int quantity ) {
+    public CartItemResponse updateItemQuantity(@PathVariable Long id, @RequestParam int quantity) {
         CartItem item = cartService.updateItem(id, quantity);
 
         return cartService.mapToResponse(item);
@@ -70,8 +71,8 @@ public class CartController {
     // Clear cart
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("")
-    public void clearCart() {
-        LocalUser user = userService.getUserById(1L); // later get from auth
+    public void clearCart(Authentication authentication) {
+        LocalUser user = authService.getUserFromAuthentication(authentication);
         cartService.clearCart(user);
     }
 

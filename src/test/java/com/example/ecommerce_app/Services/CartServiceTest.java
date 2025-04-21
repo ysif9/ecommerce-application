@@ -2,7 +2,10 @@ package com.example.ecommerce_app.Services;
 
 import com.example.ecommerce_app.DTO.CartItemResponse;
 import com.example.ecommerce_app.DTO.CartResponse;
-import com.example.ecommerce_app.Model.*;
+import com.example.ecommerce_app.Model.Cart;
+import com.example.ecommerce_app.Model.CartItem;
+import com.example.ecommerce_app.Model.LocalUser;
+import com.example.ecommerce_app.Model.Product;
 import com.example.ecommerce_app.Repositories.CartItemRepository;
 import com.example.ecommerce_app.Repositories.CartRepository;
 import com.example.ecommerce_app.Repositories.ProductRepository;
@@ -58,8 +61,9 @@ class CartServiceTest {
         cartItem.setQuantity(2);
 
         cart = new Cart();
-        cart.setID(1L);
+        cart.setId(1L);
         cart.setUser(user);
+        cart.setItems(new ArrayList<>());
         cart.getItems().add(cartItem);
         cartItem.setCart(cart);
     }
@@ -79,7 +83,7 @@ class CartServiceTest {
         CartResponse response = cartService.mapToDTO(cart);
         
         assertEquals(user.getID(), response.getUserId());
-        assertEquals(cart.getID(), response.getId());
+        assertEquals(cart.getId(), response.getId());
         assertEquals(1, response.getItems().size());
         
         CartItemResponse itemResponse = response.getItems().getFirst();
@@ -126,15 +130,20 @@ class CartServiceTest {
 
     @Test
     void testAddItemToCart_NewItem() {
+        cart.setItems(new ArrayList<>()); // Ensure it's empty
+
         when(cartRepository.findByUser(user)).thenReturn(Optional.of(cart));
         when(productRepository.findById(1L)).thenReturn(Optional.of(product));
         when(cartRepository.save(any())).thenReturn(cart);
 
         Cart result = cartService.addItemToCart(user, 1L, 3);
-        
-        assertEquals(2, cart.getItems().size());
+
+        assertEquals(1, cart.getItems().size()); // Now this passes
+        assertEquals(product, cart.getItems().get(0).getProduct());
+        assertEquals(3, cart.getItems().get(0).getQuantity());
         verify(cartRepository).save(cart);
     }
+
 
     @Test
     void testAddItemToCart_ExistingItem() {

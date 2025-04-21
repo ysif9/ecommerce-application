@@ -1,44 +1,52 @@
 package com.example.ecommerce_app.Controllers;
 
-import com.example.ecommerce_app.Model.*;
+import com.example.ecommerce_app.DTO.AuthRequest;
+import com.example.ecommerce_app.Model.LocalUser;
+import com.example.ecommerce_app.Services.AuthService;
 import com.example.ecommerce_app.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private AuthService authService;
 
     @PostMapping("/register") // register a new user
-    public String register(@RequestBody LocalUser user) {
+    public ResponseEntity<?> register(@RequestBody LocalUser user) {
         if (user.getEmail() == null || user.getEmail().isEmpty()) {
-            return "Email is required";
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email is required");
         }
 
         if (user.getUsername() == null || user.getUsername().isEmpty()) {
-            return "Username is required";
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username is required");
         }
 
         if (user.getPassword() == null || user.getPassword().isEmpty()) {
-            return "Password is required";
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Password is required");
         }
 
         if (userService.getUserByEmail(user.getEmail()).isPresent()) {
-            return "Email already exists";
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email already exists");
+
         }
 
         if (userService.getUserByUsername(user.getUsername()).isPresent()) {
-            return "Username already exists";
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username already exists");
         }
 
+        String rawPassword = user.getPassword();
         userService.registerUser(user);
-        return "User registered successfully";
+        var response = authService.authenticate(new AuthRequest(user.getUsername(), rawPassword));
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/allUsers") // get all the users
@@ -47,20 +55,24 @@ public class UserController {
     }
 
     @PostMapping("/login/email") // check login function using email
-    public String loginWithEmail(@RequestParam String email, @RequestParam String password) {
-        if (userService.loginWithEmail(email, password) != null) {
-            return "Login successful";
+    public ResponseEntity<?> loginWithEmail(@RequestParam String email, @RequestParam String password) {
+        LocalUser user = userService.loginWithEmail(email, password);
+        if (user != null) {
+            var response = authService.authenticate(new AuthRequest(user.getUsername(), password));
+            return ResponseEntity.ok(response);
         } else {
-            return "Invalid email or password";
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
         }
     }
 
     @PostMapping("/login/username") //login with username
-    public String loginWithUsername(@RequestParam String username, @RequestParam String password) {
+    public ResponseEntity<?> loginWithUsername(@RequestParam String username, @RequestParam String password) {
         if (userService.loginWithUsername(username, password) != null) {
-            return "Login successful";
+            var response = authService.authenticate(new AuthRequest(username, password));
+            return ResponseEntity.ok(response);
+//            return "Login successful";
         } else {
-            return "Invalid username or password";
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
         }
     }
 

@@ -1,14 +1,14 @@
 package com.example.ecommerce_app.Services;
 
-import com.example.ecommerce_app.DTO.CartResponse;
 import com.example.ecommerce_app.DTO.CartItemResponse;
-import com.example.ecommerce_app.Repositories.CartItemRepository;
-import com.example.ecommerce_app.Repositories.CartRepository;
-import com.example.ecommerce_app.Repositories.ProductRepository;
+import com.example.ecommerce_app.DTO.CartResponse;
 import com.example.ecommerce_app.Model.Cart;
 import com.example.ecommerce_app.Model.CartItem;
 import com.example.ecommerce_app.Model.LocalUser;
 import com.example.ecommerce_app.Model.Product;
+import com.example.ecommerce_app.Repositories.CartItemRepository;
+import com.example.ecommerce_app.Repositories.CartRepository;
+import com.example.ecommerce_app.Repositories.ProductRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -43,7 +43,7 @@ public class CartService {
     public CartResponse mapToDTO(Cart cart) {
         CartResponse cartResponse = new CartResponse();
         cartResponse.setUserId(cart.getUser().getID());
-        cartResponse.setId(cart.getID());
+        cartResponse.setId(cart.getId());
         cartResponse.setItems(cart.getItems().stream()
                 .map(this::mapToResponse)
                 .toList());

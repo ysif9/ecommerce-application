@@ -2,17 +2,21 @@ package com.example.ecommerce_app.Model;
 
 
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
+@Data
 @Entity
 @Table(name = "carts")
 public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Cart_ID", nullable = false, unique = true)
-    private long ID;
+    private long Id;
 
     @OneToOne(optional = false, orphanRemoval = true)
     @JoinColumn(name = "user_id", nullable = false)
@@ -24,31 +28,5 @@ public class Cart {
     public Cart(LocalUser user, List<CartItem> items) {
         this.user = user;
         this.items = items;
-    }
-
-    public Cart() {
-
-    }
-
-
-    public List<CartItem> getItems() {
-        return items;
-    }
-    public void setItems(List<CartItem> items) {
-        this.items = items;
-    }
-
-    public LocalUser getUser() {
-        return user;
-    }
-    public void setUser(LocalUser user) {
-        this.user = user;
-    }
-
-    public long getID() {
-        return ID;
-    }
-    public void setID(long ID) {
-        this.ID = ID;
     }
 }

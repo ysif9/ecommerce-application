@@ -1,11 +1,11 @@
 package com.example.ecommerce_app.Services;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import com.example.ecommerce_app.Model.LocalUser;
 import com.example.ecommerce_app.Repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,10 +14,14 @@ import java.util.Optional;
 
 @Service
 public class UserService {
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    @Autowired
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
 
     public String registerUser(LocalUser user) {
@@ -77,7 +81,6 @@ public class UserService {
     }
 
 
-
     public LocalUser loginWithUsername(String username, String password) {
         Optional<LocalUser> optionalUser = userRepository.findByUsername(username);
 
@@ -90,7 +93,6 @@ public class UserService {
 
         return null; // Login failed
     }
-
 
 
     public String resetPassword(String email, String oldPassword, String newPassword) {
