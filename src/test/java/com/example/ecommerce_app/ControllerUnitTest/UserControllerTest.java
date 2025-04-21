@@ -4,24 +4,29 @@ import com.example.ecommerce_app.Controllers.UserController;
 import com.example.ecommerce_app.DTO.AuthRequest;
 import com.example.ecommerce_app.DTO.AuthResponse;
 import com.example.ecommerce_app.Model.LocalUser;
-import com.example.ecommerce_app.Services.UserService;
 import com.example.ecommerce_app.Services.AuthService;
+import com.example.ecommerce_app.Services.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.util.Optional;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
+@SpringBootTest
+@AutoConfigureMockMvc
 class UserControllerTest {
 
     @Mock

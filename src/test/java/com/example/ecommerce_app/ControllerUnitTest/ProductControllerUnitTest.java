@@ -6,20 +6,23 @@ import com.example.ecommerce_app.Repositories.ProductRepository;
 import com.example.ecommerce_app.Services.ProductService;
 import com.example.ecommerce_app.exception.ProductAlreadyExistsException;
 import com.example.ecommerce_app.exception.ProductNotExistException;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.*;
-
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@AutoConfigureMockMvc
 class ProductControllerUnitTest {
 
     @Mock
