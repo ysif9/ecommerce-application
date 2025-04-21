@@ -46,17 +46,12 @@ public class ProductController {
     @ResponseStatus(HttpStatus.OK)
     public List<Product> searchProducts(
             @RequestParam(required = false) String name,
-            @RequestParam(required = false) Double minPrice,
-            @RequestParam(required = false) Double maxPrice,
             @RequestParam(required = false) String category) {
         
         if (name != null && !name.isEmpty()) {
             return productRepository.findByNameContainingIgnoreCase(name);
         }
-        
-        if (minPrice != null && maxPrice != null) {
-            return productRepository.findByPriceBetween(minPrice, maxPrice);
-        }
+
         
         if (category != null && !category.isEmpty()) {
             return productRepository.findByCategory(category);
@@ -74,9 +69,14 @@ public class ProductController {
         }
     }
     @PutMapping("/{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @Valid @RequestBody Product product) {
-        productService.updateProduct(id, product);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Product> updateProduct(@PathVariable Long id ,@Valid @RequestBody Product product)  {
+        try{
+            productService.updateProduct(id, product);
+            return ResponseEntity.ok().build();}
+        catch (ProductNotExistException e){
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        }
+
     }
 
     @DeleteMapping("/{id}")
@@ -90,6 +90,7 @@ public class ProductController {
 
     }
     }
+
 
     @GetMapping("/{min}/{max}")
     public List<Product> getProductsInRange(@PathVariable double min, @PathVariable double max) {

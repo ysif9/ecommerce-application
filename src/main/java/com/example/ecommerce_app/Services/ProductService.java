@@ -27,14 +27,21 @@ if(productRepository.findByNameIgnoreCase(product.getName()).isPresent()){
 return productRepository.save(product);
 }
 
-public Product updateProduct(Long id,Product product)  {
+public Product updateProduct(Long ID,Product product) throws ProductNotExistException {
  Product newData = new Product();
- Optional<Product> productOptional = productRepository.findById(id);
+ Optional<Product> productOptional = productRepository.findById(ID);
+ if(productOptional.isPresent()){
+     newData.setProductID(ID);
  newData.setName(product.getName());
  newData.setPrice(product.getPrice());
  newData.setQuantity(product.getQuantity());
  newData.setCategory(product.getCategory());
- return productRepository.save(newData);
+ newData.setImageURL(product.getImageURL());
+ newData.setDescription(product.getDescription());
+ return productRepository.save(newData);}
+ else
+     productRepository.save(product);
+     throw new ProductNotExistException();
 }
 
 public void deleteProduct(Long id) throws ProductNotExistException {
