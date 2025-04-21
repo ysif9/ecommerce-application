@@ -2,6 +2,8 @@ package com.example.ecommerce_app.Model;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "Product")
@@ -12,20 +14,23 @@ public class Product {
     private long productID;
 
     @Column(name = "name", nullable = false, unique = true)
+    @NotNull
+    @NotEmpty
     private String name;
 
+    @NotNull
     @Column(name = "price", nullable = false)
     private double price;
-
+    @NotNull
     @Column(name = "quantity", nullable = false)
     private int quantity;
-
+    @NotNull
     @Column(name = "description", nullable = false)
     private String description;
-
+    @NotNull
     @Column(name = "image_URL", nullable = false, unique = true)
     private String imageURL;
-
+    @NotNull
     @Column(name = "category", nullable = false)
     private String category;
 
