@@ -1,7 +1,6 @@
 package com.example.ecommerce_app.Services;
 
 import com.example.ecommerce_app.Model.*;
-
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
 
@@ -51,7 +50,7 @@ public class PaymentService {
 
     public Payment getPaymentByOrderId(Long orderId) {
         return paymentStore.values().stream()
-                .filter(p -> p.getOrder().getId().equals(orderId))
+                .filter(p -> p.getOrder().getOrderID() == orderId)
                 .findFirst()
                 .orElseThrow(() -> new NoSuchElementException("Payment not found for order ID: " + orderId));
     }
@@ -77,7 +76,7 @@ public class PaymentService {
     }
 
     public void addOrder(UserOrder order) {
-        orderStore.put(order.getId(), order);
+        orderStore.put(order.getOrderID(), order);
     }
 
     public Payment updatePayment(Payment updatedPayment) {

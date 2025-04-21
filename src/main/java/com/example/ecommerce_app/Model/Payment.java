@@ -1,6 +1,7 @@
 package com.example.ecommerce_app.Model;
 
 import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -21,7 +22,7 @@ public class Payment {
 
     // Relationships
     @OneToOne
-    @JoinColumn(name = "order_id", referencedColumnName = "id")
+    @JoinColumn(name = "order_id", referencedColumnName = "OrderID")
     private UserOrder order;
 
     @ManyToOne
