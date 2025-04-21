@@ -1,65 +1,86 @@
-package com.example.ecommerce_app.Services;
+package com.example.ecommerce_app.services;
 
-import com.example.ecommerce_app.Model.OrderItem;
-import com.example.ecommerce_app.Model.UserOrder;
-import com.example.ecommerce_app.exception.OrderNotFoundException;
-import jakarta.transaction.Transactional;
-import org.junit.jupiter.api.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.Collections;
-import java.util.List;
+import com.example.ecommerce_app.model.*;
+import com.example.ecommerce_app.repository.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.*;
+import java.time.LocalDateTime;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
-@SpringBootTest
 public class OrderServiceTest {
 
-    @Autowired
+    @Mock
+    private UserOrderRepository orderRepo;
+
+    @Mock
+    private OrderItemRepository orderItemRepo;
+
+    @InjectMocks
     private OrderService orderService;
 
+    @BeforeEach
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
+
     @Test
-    @Transactional
-    @DisplayName("Test1: Place new order")
-    public void placeOrder_success() {
+    public void testGetOrdersByUserWithoutStatus() {
+        LocalUser user = new LocalUser();
+        List<UserOrder> orders = List.of(new UserOrder());
+        when(orderRepo.findByUser(user)).thenReturn(orders);
+
+        List<UserOrder> result = orderService.getOrdersByUser(user, null);
+        assertEquals(orders, result);
+    }
+
+    @Test
+    public void testGetOrderById() {
         UserOrder order = new UserOrder();
-        order.setOrderItems(Collections.singletonList(new OrderItem(1L, 2)));
+        when(orderRepo.findById(1L)).thenReturn(Optional.of(order));
 
-        assertDoesNotThrow(() -> {
-            orderService.placeOrder(order);
-        });
+        UserOrder result = orderService.getOrderById(1L);
+        assertEquals(order, result);
     }
 
     @Test
-    @Transactional
-    @DisplayName("Test2: Get order by valid ID")
-    public void getOrderById_success() {
-        UserOrder order = orderService.getOrderById(1L);
-        assertNotNull(order);
+    public void testPlaceOrder() {
+        LocalUser user = new LocalUser();
+        Product product = new Product();
+        product.setName("Phone");
+        product.setPrice(500.0);
+
+        CartItem cartItem = new CartItem();
+        cartItem.setProduct(product);
+        cartItem.setQuantity(2);
+
+        List<CartItem> cartItems = List.of(cartItem);
+
+        when(orderRepo.save(any(UserOrder.class))).thenAnswer(i -> i.getArgument(0));
+
+        UserOrder result = orderService.placeOrder(user, cartItems);
+
+        assertNotNull(result);
+        assertEquals(1000.0, result.getTotalPrice(), 0.01);
+        assertEquals("pending", result.getStatus());
+        assertEquals(user, result.getUser());
+        assertNotNull(result.getItems());
     }
 
     @Test
-    @Transactional
-    @DisplayName("Test3: Get order by invalid ID")
-    public void getOrderById_fail() {
-        assertThrows(OrderNotFoundException.class, () -> {
-            orderService.getOrderById(999L);
-        });
+    public void testUpdateOrder() {
+        UserOrder order = new UserOrder();
+        when(orderRepo.save(order)).thenReturn(order);
+        assertEquals(order, orderService.updateOrder(order));
     }
 
     @Test
-    @Transactional
-    @DisplayName("Test4: Cancel order")
-    public void cancelOrder_success() {
-        assertDoesNotThrow(() -> orderService.cancelOrder(1L));
-    }
-
-    @Test
-    @Transactional
-    @DisplayName("Test5: List all orders")
-    public void listOrders_success() {
-        List<UserOrder> orders = orderService.getOrdersForUser("orderuser");
-        assertNotNull(orders);
+    public void testDeleteOrder() {
+        Long id = 5L;
+        orderService.deleteOrder(id);
+        verify(orderRepo, times(1)).deleteById(id);
     }
 }
