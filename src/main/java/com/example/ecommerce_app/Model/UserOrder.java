@@ -22,8 +22,8 @@ public class UserOrder {
     @ManyToOne
     private LocalUser user;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<CartItem> items;
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<OrderItem> items;
 
     private double totalPrice;
 
