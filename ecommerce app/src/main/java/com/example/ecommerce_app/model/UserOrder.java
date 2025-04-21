@@ -20,8 +20,8 @@ public class UserOrder {
     @ManyToOne
     private LocalUser user;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<CartItem> items;
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<OrderItem> items;
 
     private double totalPrice;
 
@@ -43,7 +43,7 @@ public class UserOrder {
         this.orderID = orderID;
     }
 
-    public void setItems(List<CartItem> cartItems) {
+    public void setItems(List<OrderItem> cartItems) {
     }
 
     public void setOrderDate(LocalDateTime now) {
