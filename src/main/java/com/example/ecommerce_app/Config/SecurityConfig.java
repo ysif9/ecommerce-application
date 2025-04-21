@@ -33,10 +33,11 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/h2-console/**").permitAll();
-                    auth.requestMatchers("/api/users/login/**").permitAll();
-                    auth.requestMatchers("/api/users/register/**").permitAll();
-                    auth.requestMatchers("/error/**").permitAll();
+                    auth.requestMatchers("/h2-console/**",
+                            "/api/users/login/**",
+                            "/api/users/register/**"
+                            ,"/error/**").permitAll();
+
                     auth.anyRequest().authenticated();
                 })
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
