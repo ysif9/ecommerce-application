@@ -1,16 +1,26 @@
-package com.example.ecommerce_app.services;
+package com.example.ecommerce_app.Services;
 
-import com.example.ecommerce_app.model.*;
-import com.example.ecommerce_app.repository.*;
+import com.example.ecommerce_app.Model.CartItem;
+import com.example.ecommerce_app.Model.LocalUser;
+import com.example.ecommerce_app.Model.Product;
+import com.example.ecommerce_app.Model.UserOrder;
+import com.example.ecommerce_app.Repositories.OrderItemRepository;
+import com.example.ecommerce_app.Repositories.UserOrderRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.*;
-import java.time.LocalDateTime;
-import java.util.*;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
+@AutoConfigureMockMvc
 public class OrderServiceTest {
 
     @Mock

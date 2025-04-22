@@ -1,13 +1,15 @@
-package com.example.ecommerce_app.API.controller;
+package com.example.ecommerce_app.ControllerUnitTest;
 
-import com.example.ecommerce_app.model.*;
-import com.example.ecommerce_app.services.OrderService;
+import com.example.ecommerce_app.Controllers.OrderController;
+import com.example.ecommerce_app.Model.LocalUser;
+import com.example.ecommerce_app.Model.UserOrder;
+import com.example.ecommerce_app.Services.OrderService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.*;
-import org.mockito.Mockito;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -15,15 +17,16 @@ import java.util.List;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@AutoConfigureMockMvc
 @WebMvcTest(OrderController.class)
 public class OrderControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+    @Mock
     private OrderService orderService;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -32,7 +35,7 @@ public class OrderControllerTest {
     public void testGetOrders() throws Exception {
         LocalUser user = new LocalUser();
         UserOrder order = new UserOrder();
-        order.setId(1L);
+        order.setOrderID(1L);
         order.setStatus("pending");
 
         when(orderService.getOrdersByUser(any(LocalUser.class), eq(null)))
@@ -45,7 +48,7 @@ public class OrderControllerTest {
     @Test
     public void testGetOrderById() throws Exception {
         UserOrder order = new UserOrder();
-        order.setId(1L);
+        order.setOrderID(1L);
         when(orderService.getOrderById(1L)).thenReturn(order);
 
         mockMvc.perform(get("/api/orders/1"))
@@ -55,7 +58,7 @@ public class OrderControllerTest {
     @Test
     public void testPlaceOrder() throws Exception {
         UserOrder order = new UserOrder();
-        order.setId(1L);
+        order.setOrderID(1L);
         order.setStatus("pending");
 
         when(orderService.placeOrder(any(LocalUser.class), anyList())).thenReturn(order);
@@ -67,7 +70,7 @@ public class OrderControllerTest {
     @Test
     public void testUpdateOrder() throws Exception {
         UserOrder order = new UserOrder();
-        order.setId(1L);
+        order.setOrderID(1L);
 
         when(orderService.updateOrder(any(UserOrder.class))).thenReturn(order);
 
