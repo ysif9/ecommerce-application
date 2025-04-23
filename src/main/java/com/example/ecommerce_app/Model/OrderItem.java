@@ -10,9 +10,12 @@ public class OrderItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String productName;
     private int quantity;
     private double price;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
 
     @ManyToOne
     @JoinColumn(name = "order_id")
@@ -25,8 +28,8 @@ public class OrderItem {
         return id;
     }
 
-    public String getProductName() {
-        return productName;
+    public Product getProduct() {
+        return product;
     }
 
     public int getQuantity() {
@@ -45,8 +48,8 @@ public class OrderItem {
         this.id = id;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     public void setQuantity(int quantity) {

@@ -42,7 +42,7 @@ public class OrderService {
 
         for (CartItem cartItem : cartItems) {
             OrderItem orderItem = new OrderItem();
-            orderItem.setProductName(cartItem.getProduct().getName());
+            orderItem.setProduct(cartItem.getProduct());
             orderItem.setQuantity(cartItem.getQuantity());
             orderItem.setPrice(cartItem.getProduct().getPrice());
             orderItem.setOrder(order); // link back to order

@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import java.util.List;
 
 @Entity
 @Table(name = "Product")
@@ -36,6 +37,10 @@ public class Product {
     @Column(name = "category", nullable = false)
     private String category;
 
+    @OneToMany(mappedBy = "product")
+    @com.fasterxml.jackson.annotation.JsonIgnore
+    private List<OrderItem> orderItems;
+
 //    @OneToMany(mappedBy = "product")
 //    private List<CartItem> cartItems;
 
@@ -51,6 +56,13 @@ public class Product {
 
     public Product() {
 
+    }
+
+    public List<OrderItem> getOrderItems() {
+        return orderItems;
+    }
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
     }
 
 //    public List<CartItem> getCartItems() {

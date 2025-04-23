@@ -2,6 +2,7 @@ package com.example.ecommerce_app.ControllerUnitTest;
 
 import com.example.ecommerce_app.DTO.AuthRequest;
 import com.example.ecommerce_app.Model.*;
+import com.example.ecommerce_app.Repositories.ProductRepository;
 import com.example.ecommerce_app.Repositories.UserOrderRepository;
 import com.example.ecommerce_app.Repositories.UserRepository;
 import com.example.ecommerce_app.Services.CartService;
@@ -40,6 +41,9 @@ class OrderControllerMVCTest {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
 
     @Autowired
     private OrderService orderService;
@@ -104,7 +108,23 @@ class OrderControllerMVCTest {
 
         List<OrderItem> items = new ArrayList<>();
         OrderItem item = new OrderItem();
-        item.setProductName("Test Product");
+
+        // Create a test product or use existing one
+        Product testProduct;
+        if (productRepository.findByNameIgnoreCase("Test Product").isPresent()) {
+            testProduct = productRepository.findByNameIgnoreCase("Test Product").get();
+        } else {
+            testProduct = new Product();
+            testProduct.setName("Test Product");
+            testProduct.setPrice(50.0);
+            testProduct.setQuantity(10);
+            testProduct.setDescription("Test Description");
+            testProduct.setImageURL("test-image.jpg");
+            testProduct.setCategory("Test Category");
+            testProduct = productRepository.save(testProduct);
+        }
+
+        item.setProduct(testProduct);
         item.setQuantity(2);
         item.setPrice(50.0);
         item.setOrder(testOrder);
