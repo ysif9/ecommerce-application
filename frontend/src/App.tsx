@@ -19,6 +19,7 @@ import OrderDetailPage from "./pages/OrderDetailPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import ProfilePage from "./pages/ProfilePage";
 import * as React from "react";
+import AboutPage from "@/pages/AboutPage.tsx";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -52,6 +53,7 @@ function App() {
                 <Route path="/products" element={<ProductsPage />} />
                 <Route path="/products/:id" element={<ProductDetailPage />} />
                 <Route path="/cart" element={<CartPage />} />
+                  <Route path="/about" element={<AboutPage />} />
                 <Route
                   path="/checkout"
                   element={
