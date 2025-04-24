@@ -1,38 +1,36 @@
 package com.example.ecommerce_app.Services;
 
 import com.example.ecommerce_app.Model.*;
-import jakarta.annotation.PostConstruct;
+import com.example.ecommerce_app.Repositories.PaymentRepository;
+import com.example.ecommerce_app.Repositories.UserOrderRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 public class PaymentService {
 
-    private final Map<Long, Payment> paymentStore = new HashMap<>();
-    private final AtomicLong idGenerator = new AtomicLong(1);
+    private final PaymentRepository paymentRepository;
+    private final UserOrderRepository orderRepository;
 
-    private final Map<Long, UserOrder> orderStore = new HashMap<>();
-
-    @PostConstruct
-    public void init() {
-        // testing data
+    @Autowired
+    public PaymentService(PaymentRepository paymentRepository, UserOrderRepository orderRepository) {
+        this.paymentRepository = paymentRepository;
+        this.orderRepository = orderRepository;
     }
 
     public Payment processPayment(Long orderId, PaymentMethod method, double amount, LocalUser user) {
-        UserOrder order = orderStore.get(orderId);
-        if (order == null) {
-            throw new NoSuchElementException("Order not found with ID: " + orderId);
-        }
+        UserOrder order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new NoSuchElementException("Order not found with ID: " + orderId));
 
         if (order.getUser().getID() != user.getID()) {
             throw new SecurityException("You can only pay for your own orders.");
         }
 
         Payment payment = new Payment();
-        payment.setId(idGenerator.getAndIncrement());
         payment.setOrder(order);
         payment.setUser(user);
         payment.setMethod(method.toString());
@@ -44,52 +42,43 @@ public class PaymentService {
         boolean success = true;
         payment.setStatus(success ? PaymentStatus.COMPLETED : PaymentStatus.FAILED);
 
-        paymentStore.put(payment.getId(), payment);
-        return payment;
+        return paymentRepository.save(payment);
     }
 
     public Payment getPaymentByOrderId(Long orderId) {
-        return paymentStore.values().stream()
-                .filter(p -> p.getOrder().getOrderID() == orderId)
-                .findFirst()
+        UserOrder order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new NoSuchElementException("Order not found with ID: " + orderId));
+
+        return paymentRepository.findByOrder(order)
                 .orElseThrow(() -> new NoSuchElementException("Payment not found for order ID: " + orderId));
     }
 
     public Payment updatePaymentStatus(Long id, PaymentStatus newStatus) {
-        Payment payment = paymentStore.get(id);
-        if (payment == null) {
-            throw new NoSuchElementException("Payment not found with ID: " + id);
-        }
+        Payment payment = paymentRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Payment not found with ID: " + id));
 
         payment.setStatus(newStatus);
-        return payment;
+        return paymentRepository.save(payment);
     }
 
     public List<Payment> getPaymentsForUser(LocalUser user) {
-        List<Payment> userPayments = new ArrayList<>();
-        for (Payment payment : paymentStore.values()) {
-            if (payment.getUser().getID() == user.getID()) {
-                userPayments.add(payment);
-            }
-        }
-        return userPayments;
+        return paymentRepository.findByUser(user);
     }
 
     public void addOrder(UserOrder order) {
-        orderStore.put(order.getOrderID(), order);
+        orderRepository.save(order);
     }
 
     public Payment updatePayment(Payment updatedPayment) {
+        Payment existingPayment = paymentRepository.findById(updatedPayment.getId())
+                .orElseThrow(() -> new NoSuchElementException("Payment not found with ID: " + updatedPayment.getId()));
 
-        Payment existingPayment = paymentStore.get(updatedPayment.getId());
-        if (existingPayment == null) {
-            throw new NoSuchElementException("Payment not found with ID: " + updatedPayment.getId());
-        }
         existingPayment.setMethod(updatedPayment.getMethod());
         existingPayment.setAmount(updatedPayment.getAmount());
         existingPayment.setStatus(updatedPayment.getStatus());
         existingPayment.setTransactionId(updatedPayment.getTransactionId());
-        return updatedPayment;
+
+        return paymentRepository.save(existingPayment);
     }
 
 
