@@ -1,11 +1,7 @@
 package com.example.ecommerce_app;
 
-import com.example.ecommerce_app.Model.Cart;
-import com.example.ecommerce_app.Model.LocalUser;
-import com.example.ecommerce_app.Model.Product;
-import com.example.ecommerce_app.Repositories.CartRepository;
-import com.example.ecommerce_app.Repositories.ProductRepository;
-import com.example.ecommerce_app.Repositories.UserRepository;
+import com.example.ecommerce_app.Model.*;
+import com.example.ecommerce_app.Repositories.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -21,12 +17,16 @@ public class DataLoader implements CommandLineRunner {
     private final UserRepository localUserRepository;
     private final ProductRepository productRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserOrderRepository userOrderRepository;
+    private final OrderItemRepository orderItemRepository;
 
-    public DataLoader(CartRepository cartRepository, UserRepository localUserRepository, ProductRepository productRepository, PasswordEncoder passwordEncoder) {
+    public DataLoader(CartRepository cartRepository, UserRepository localUserRepository, ProductRepository productRepository, PasswordEncoder passwordEncoder, UserOrderRepository userOrderRepository, OrderItemRepository orderItemRepository) {
         this.cartRepository = cartRepository;
         this.localUserRepository = localUserRepository;
         this.productRepository = productRepository;
         this.passwordEncoder = passwordEncoder;
+        this.userOrderRepository = userOrderRepository;
+        this.orderItemRepository = orderItemRepository;
     }
 
     @Override
@@ -62,7 +62,30 @@ public class DataLoader implements CommandLineRunner {
                 new Product("Wireless Mouse", 49.99, 30, "Ergonomic wireless mouse with long battery life", "https://example.com/mouse.jpg", "Electronics")
         );
 
+        UserOrder userOrder = new UserOrder();
+        userOrder.setUser(myuser);
+        userOrder.setOrderDate(LocalDateTime.now());
+        userOrder.setTotalPrice(1000.0);
+        userOrder.setStatus("PENDING");
+
+        OrderItem orderItem = new OrderItem();
+        orderItem.setProductName("Laptop");
+        orderItem.setQuantity(1);
+        orderItem.setPrice(999.99);
+
+        userOrder.setItems(
+                Arrays.asList(
+                        orderItem
+                )
+        );
+        orderItem.setOrder(userOrder);
+
+
+
         // Save all products
         productRepository.saveAll(products);
+
+        userOrderRepository.save(userOrder);
+
     }
 }
