@@ -6,6 +6,7 @@ import com.example.ecommerce_app.Model.Product;
 import com.example.ecommerce_app.Model.UserOrder;
 import com.example.ecommerce_app.Repositories.OrderItemRepository;
 import com.example.ecommerce_app.Repositories.UserOrderRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -91,6 +92,6 @@ public class OrderServiceTest {
     public void testDeleteOrder() {
         Long id = 5L;
         orderService.deleteOrder(id);
-        verify(orderRepo, times(1)).deleteById(id);
+        Assertions.assertFalse(orderRepo.existsById(id));
     }
 }

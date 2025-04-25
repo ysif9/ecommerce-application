@@ -222,10 +222,29 @@ public class ProductControllerMVCTest {
                 .andExpect(jsonPath("$", hasSize(0)));
     }
 
+    @Test
+    @DisplayName("Test17: Get all products should return list")
     void getAllProducts_shouldReturnList() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/products").header("Authorization", "Bearer " + token))
 
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
+    @Test
+    @DisplayName("Test18: search product with empty category Fail")
+    void searchByCategory_empty_fail() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/products/search").header("Authorization", "Bearer " + token)
+                        .param("category", ""))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(10)));
+    }
+    @Test
+    @DisplayName("Test19: search product with empty name fail")
+    void searchByName_empty() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/products/search").header("Authorization", "Bearer " + token)
+                        .param("name", ""))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(10)));
+    }
+
 }

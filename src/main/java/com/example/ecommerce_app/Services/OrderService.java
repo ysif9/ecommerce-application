@@ -70,7 +70,8 @@ public class OrderService {
 
     @Transactional
     public void deleteOrder(Long id) {
-        paymentRepository.deleteByOrder_OrderID(id);
+        /// @check for any caused issues
+//        paymentRepository.deleteByOrder_OrderID(id);
         orderRepo.deleteById(id);
     }
 }
