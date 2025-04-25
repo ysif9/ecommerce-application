@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @AutoConfigureMockMvc
-class ProductControllerUnitTest {
+public class ProductControllerUnitTest {
 
     @Mock
     private ProductRepository productRepository;

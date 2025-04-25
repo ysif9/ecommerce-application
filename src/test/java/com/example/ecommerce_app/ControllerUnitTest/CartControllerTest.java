@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class CartControllerTest {
+public class CartControllerTest {
 
     @Mock
     private CartService cartService;
@@ -116,8 +116,8 @@ class CartControllerTest {
         assertEquals(1L, response.getId());
         assertEquals(1L, response.getUserId());
         assertEquals(1, response.getItems().size());
-        assertEquals(1L, response.getItems().get(0).getId());
-        assertEquals("Test Product", response.getItems().get(0).getProductName());
+        assertEquals(1L, response.getItems().getFirst().getId());
+        assertEquals("Test Product", response.getItems().getFirst().getProductName());
 
         verify(authService, times(1)).getUserFromAuthentication(authentication);
         verify(cartService, times(1)).getCartByUser(user);

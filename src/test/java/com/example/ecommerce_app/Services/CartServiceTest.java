@@ -29,7 +29,7 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
-class CartServiceTest {
+public class CartServiceTest {
 
     @Mock
     private CartRepository cartRepository;
@@ -222,6 +222,18 @@ class CartServiceTest {
         
         assertTrue(cart.getItems().isEmpty());
         verify(cartRepository).save(cart);
+    }
+
+    @Test
+    @DisplayName("13: Test update cart item quantity")
+    void testUpdateItemQuantity() {
+        when(cartItemRepository.findById(1L)).thenReturn(Optional.of(cartItem));
+        when(cartRepository.save(any())).thenReturn(cart);
+
+        cartService.updateItem(1L, 5);
+
+        assertEquals(5, cartItem.getQuantity());
+        verify(cartItemRepository).save(cartItem);
     }
 
     @AfterEach

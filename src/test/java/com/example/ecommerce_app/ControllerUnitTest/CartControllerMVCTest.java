@@ -3,8 +3,6 @@ package com.example.ecommerce_app.ControllerUnitTest;
 import com.example.ecommerce_app.DTO.AuthRequest;
 import com.example.ecommerce_app.Model.LocalUser;
 import com.example.ecommerce_app.Model.Product;
-import com.example.ecommerce_app.Repositories.CartItemRepository;
-import com.example.ecommerce_app.Repositories.CartRepository;
 import com.example.ecommerce_app.Repositories.ProductRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
@@ -26,16 +24,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class CartControllerMVCTest {
+public class CartControllerMVCTest {
 
     @Autowired
     private MockMvc mockMvc;
-
-    @Autowired
-    private CartRepository cartRepository;
-
-    @Autowired
-    private CartItemRepository cartItemRepository;
 
     @Autowired
     private ProductRepository productRepository;
@@ -138,12 +130,10 @@ class CartControllerMVCTest {
     @DisplayName("Test3: Add item to cart with invalid product ID")
     @Transactional
     void addItemToCart_invalidProductId() throws Exception {
-        Assertions.assertThrows(ServletException.class, () -> {
-            mockMvc.perform(MockMvcRequestBuilders.post("/api/cart/items")
-                    .header("Authorization", "Bearer " + token)
-                    .param("productId", "999999")
-                    .param("quantity", "2"));
-        });
+        Assertions.assertThrows(ServletException.class, () -> mockMvc.perform(MockMvcRequestBuilders.post("/api/cart/items")
+                .header("Authorization", "Bearer " + token)
+                .param("productId", "999999")
+                .param("quantity", "2")));
     }
 
     @Test
@@ -216,11 +206,9 @@ class CartControllerMVCTest {
     @Test
     @DisplayName("Test7: Get item details with invalid ID")
     @Transactional
-    void getItemDetails_invalidId() throws Exception {
-        Assertions.assertThrows(ServletException.class, () -> {
-            mockMvc.perform(MockMvcRequestBuilders.get("/api/cart/items/999999")
-                    .header("Authorization", "Bearer " + token));
-        });
+    void getItemDetails_invalidId() {
+        Assertions.assertThrows(ServletException.class, () -> mockMvc.perform(MockMvcRequestBuilders.get("/api/cart/items/999999")
+                .header("Authorization", "Bearer " + token)));
     }
 
     @Test
@@ -257,12 +245,10 @@ class CartControllerMVCTest {
     @Test
     @DisplayName("Test9: Update item quantity with invalid ID")
     @Transactional
-    void updateItemQuantity_invalidId() throws Exception {
-        Assertions.assertThrows(ServletException.class, () -> {
-            mockMvc.perform(MockMvcRequestBuilders.patch("/api/cart/items/999999")
-                    .header("Authorization", "Bearer " + token)
-                    .param("quantity", "5"));
-        });
+    void updateItemQuantity_invalidId() {
+        Assertions.assertThrows(ServletException.class, () -> mockMvc.perform(MockMvcRequestBuilders.patch("/api/cart/items/999999")
+                .header("Authorization", "Bearer " + token)
+                .param("quantity", "5")));
     }
 
     @Test
@@ -296,11 +282,9 @@ class CartControllerMVCTest {
     @Test
     @DisplayName("Test11: Remove item with invalid ID")
     @Transactional
-    void removeItem_invalidId() throws Exception {
-        Assertions.assertThrows(ServletException.class, () -> {
-            mockMvc.perform(MockMvcRequestBuilders.delete("/api/cart/items/999999")
-                    .header("Authorization", "Bearer " + token));
-        });
+    void removeItem_invalidId() {
+        Assertions.assertThrows(ServletException.class, () -> mockMvc.perform(MockMvcRequestBuilders.delete("/api/cart/items/999999")
+                .header("Authorization", "Bearer " + token)));
     }
 
     @Test
