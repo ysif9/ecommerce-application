@@ -1,9 +1,6 @@
 package com.example.ecommerce_app.Services;
 
-import com.example.ecommerce_app.Model.CartItem;
-import com.example.ecommerce_app.Model.LocalUser;
-import com.example.ecommerce_app.Model.OrderItem;
-import com.example.ecommerce_app.Model.UserOrder;
+import com.example.ecommerce_app.Model.*;
 import com.example.ecommerce_app.Repositories.OrderItemRepository;
 import com.example.ecommerce_app.Repositories.PaymentRepository;
 import com.example.ecommerce_app.Repositories.UserOrderRepository;
@@ -71,7 +68,11 @@ public class OrderService {
     @Transactional
     public void deleteOrder(Long id) {
         /// @check for any caused issues
-//        paymentRepository.deleteByOrder_OrderID(id);
+        //check if payment exists first
+        Payment payment = paymentService.getPaymentByOrderId(id);
+        if (payment != null) {
+            paymentRepository.deleteByOrder_OrderID(id);
+        }
         orderRepo.deleteById(id);
     }
 }

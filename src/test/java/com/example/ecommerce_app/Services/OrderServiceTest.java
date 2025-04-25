@@ -19,7 +19,8 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.when;
 
 @AutoConfigureMockMvc
 public class OrderServiceTest {
@@ -32,6 +33,9 @@ public class OrderServiceTest {
 
     @InjectMocks
     private OrderService orderService;
+
+    @Mock
+    private PaymentService paymentService;
 
     @BeforeEach
     public void setUp() {
