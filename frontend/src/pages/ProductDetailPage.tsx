@@ -198,51 +198,51 @@ const ProductDetailPage = () => {
             <TabsContent value="description" className="mt-6 space-y-4">
               <h3 className="text-xl font-semibold">Product Description</h3>
               <p className="text-gray-600">{product.description}</p>
-              <p className="text-gray-600">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla quam velit, vulputate eu pharetra nec, mattis ac neque. Duis vulputate commodo lectus, ac blandit elit tincidunt id. Sed rhoncus, tortor sed eleifend tristique, tortor mauris molestie elit.
-              </p>
-              <p className="text-gray-600">
-                Sed consequat, leo eget bibendum sodales, augue velit cursus nunc, quis gravida magna mi a libero. Fusce vulputate eleifend sapien. Vestibulum purus quam, scelerisque ut, mollis sed, nonummy id, metus.
-              </p>
+              {/*<p className="text-gray-600">*/}
+              {/*  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla quam velit, vulputate eu pharetra nec, mattis ac neque. Duis vulputate commodo lectus, ac blandit elit tincidunt id. Sed rhoncus, tortor sed eleifend tristique, tortor mauris molestie elit.*/}
+              {/*</p>*/}
+              {/*<p className="text-gray-600">*/}
+              {/*  Sed consequat, leo eget bibendum sodales, augue velit cursus nunc, quis gravida magna mi a libero. Fusce vulputate eleifend sapien. Vestibulum purus quam, scelerisque ut, mollis sed, nonummy id, metus.*/}
+              {/*</p>*/}
             </TabsContent>
 
-            <TabsContent value="specifications" className="mt-6 space-y-4">
-              <h3 className="text-xl font-semibold">Specifications</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-3">
-                  <div className="grid grid-cols-2 border-b pb-2">
-                    <p className="text-gray-500">Category</p>
-                    <p className="font-medium">{product.category}</p>
-                  </div>
-                  <div className="grid grid-cols-2 border-b pb-2">
-                    <p className="text-gray-500">Brand</p>
-                    <p className="font-medium">EchoCart</p>
-                  </div>
-                  <div className="grid grid-cols-2 border-b pb-2">
-                    <p className="text-gray-500">Weight</p>
-                    <p className="font-medium">0.5 kg</p>
-                  </div>
-                  <div className="grid grid-cols-2 border-b pb-2">
-                    <p className="text-gray-500">Dimensions</p>
-                    <p className="font-medium">10 × 10 × 10 cm</p>
-                  </div>
-                </div>
-                <div className="space-y-3">
-                  <div className="grid grid-cols-2 border-b pb-2">
-                    <p className="text-gray-500">Material</p>
-                    <p className="font-medium">Metal/Plastic</p>
-                  </div>
-                  <div className="grid grid-cols-2 border-b pb-2">
-                    <p className="text-gray-500">Color</p>
-                    <p className="font-medium">Black</p>
-                  </div>
-                  <div className="grid grid-cols-2 border-b pb-2">
-                    <p className="text-gray-500">Warranty</p>
-                    <p className="font-medium">1 Year</p>
-                  </div>
-                </div>
-              </div>
-            </TabsContent>
+            {/*<TabsContent value="specifications" className="mt-6 space-y-4">*/}
+            {/*  <h3 className="text-xl font-semibold">Specifications</h3>*/}
+            {/*  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">*/}
+            {/*    <div className="space-y-3">*/}
+            {/*      <div className="grid grid-cols-2 border-b pb-2">*/}
+            {/*        <p className="text-gray-500">Category</p>*/}
+            {/*        <p className="font-medium">{product.category}</p>*/}
+            {/*      </div>*/}
+            {/*      <div className="grid grid-cols-2 border-b pb-2">*/}
+            {/*        <p className="text-gray-500">Brand</p>*/}
+            {/*        <p className="font-medium">EchoCart</p>*/}
+            {/*      </div>*/}
+            {/*      <div className="grid grid-cols-2 border-b pb-2">*/}
+            {/*        <p className="text-gray-500">Weight</p>*/}
+            {/*        <p className="font-medium">0.5 kg</p>*/}
+            {/*      </div>*/}
+            {/*      <div className="grid grid-cols-2 border-b pb-2">*/}
+            {/*        <p className="text-gray-500">Dimensions</p>*/}
+            {/*        <p className="font-medium">10 × 10 × 10 cm</p>*/}
+            {/*      </div>*/}
+            {/*    </div>*/}
+            {/*    <div className="space-y-3">*/}
+            {/*      <div className="grid grid-cols-2 border-b pb-2">*/}
+            {/*        <p className="text-gray-500">Material</p>*/}
+            {/*        <p className="font-medium">Metal/Plastic</p>*/}
+            {/*      </div>*/}
+            {/*      <div className="grid grid-cols-2 border-b pb-2">*/}
+            {/*        <p className="text-gray-500">Color</p>*/}
+            {/*        <p className="font-medium">Black</p>*/}
+            {/*      </div>*/}
+            {/*      <div className="grid grid-cols-2 border-b pb-2">*/}
+            {/*        <p className="text-gray-500">Warranty</p>*/}
+            {/*        <p className="font-medium">1 Year</p>*/}
+            {/*      </div>*/}
+            {/*    </div>*/}
+            {/*  </div>*/}
+            {/*</TabsContent>*/}
 
           </Tabs>
         </div>

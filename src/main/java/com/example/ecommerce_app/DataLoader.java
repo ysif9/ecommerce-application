@@ -66,7 +66,7 @@ public class DataLoader implements CommandLineRunner {
         userOrder.setUser(myuser);
         userOrder.setOrderDate(LocalDateTime.now());
         userOrder.setTotalPrice(1000.0);
-        userOrder.setStatus("PENDING");
+        userOrder.setStatus("Pending");
 
         OrderItem orderItem = new OrderItem();
         orderItem.setProductName("Laptop");
@@ -84,6 +84,7 @@ public class DataLoader implements CommandLineRunner {
 
         // Save all products
         productRepository.saveAll(products);
+
 
         userOrderRepository.save(userOrder);
 

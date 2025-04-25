@@ -21,7 +21,7 @@ interface CheckoutFormData {
 }
 
 const CheckoutPage = () => {
-  const { cart, cartTotal } = useCart();
+  const {cart, cartTotal, clearCart} = useCart();
   const navigate = useNavigate();
   const [isProcessing, setIsProcessing] = useState(false);
 
@@ -68,6 +68,7 @@ const CheckoutPage = () => {
         title: "Payment Successful",
         description: "Your order has been placed and payment has been processed successfully.",
       });
+      clearCart();
 
       navigate('/orders');
     } catch (error) {

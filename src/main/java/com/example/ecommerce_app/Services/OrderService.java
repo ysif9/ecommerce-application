@@ -5,7 +5,9 @@ import com.example.ecommerce_app.Model.LocalUser;
 import com.example.ecommerce_app.Model.OrderItem;
 import com.example.ecommerce_app.Model.UserOrder;
 import com.example.ecommerce_app.Repositories.OrderItemRepository;
+import com.example.ecommerce_app.Repositories.PaymentRepository;
 import com.example.ecommerce_app.Repositories.UserOrderRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -17,10 +19,14 @@ public class OrderService {
     private final UserOrderRepository orderRepo;
 
     private final OrderItemRepository orderItemRepo;
+    private final PaymentRepository paymentRepository;
+    private final PaymentService paymentService;
 
-    public OrderService(UserOrderRepository orderRepo, OrderItemRepository orderItemRepo) {
+    public OrderService(UserOrderRepository orderRepo, OrderItemRepository orderItemRepo, PaymentRepository paymentRepository, PaymentService paymentService) {
         this.orderRepo = orderRepo;
         this.orderItemRepo = orderItemRepo;
+        this.paymentRepository = paymentRepository;
+        this.paymentService = paymentService;
     }
 
     public List<UserOrder> getOrdersByUser(LocalUser user, String status) {
@@ -62,7 +68,9 @@ public class OrderService {
         return orderRepo.save(order);
     }
 
+    @Transactional
     public void deleteOrder(Long id) {
+        paymentRepository.deleteByOrder_OrderID(id);
         orderRepo.deleteById(id);
     }
 }

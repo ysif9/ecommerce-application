@@ -1,4 +1,4 @@
-import {Link, useParams} from 'react-router-dom';
+import {Link, useNavigate, useParams} from 'react-router-dom';
 import {MainLayout} from '../components/Layout/MainLayout';
 import {useCancelOrder, useOrder} from '../hooks/use-orders';
 import {Button} from '@/components/ui/button';
@@ -9,6 +9,7 @@ const OrderDetailPage = () => {
   const { id } = useParams();
   const { data: order, isLoading, error } = useOrder(id);
   const cancelOrderMutation = useCancelOrder();
+  const navigate = useNavigate();
 
   if (isLoading) {
     return (
@@ -43,7 +44,12 @@ const OrderDetailPage = () => {
 
   const handleCancelOrder = () => {
     if (window.confirm('Are you sure you want to cancel this order?')) {
-      cancelOrderMutation.mutate(order.id);
+
+      cancelOrderMutation.mutate(order.id, {
+        onSuccess: () => {
+          navigate('/orders');
+        }
+      });
     }
   };
 
