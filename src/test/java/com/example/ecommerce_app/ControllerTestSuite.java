@@ -15,7 +15,8 @@ import org.junit.platform.suite.api.Suite;
         OrderControllerMVCTest.class,
         ProductControllerMVCTest.class,
         ProductControllerUnitTest.class,
-        UserControllerTest.class
+        UserControllerTest.class,
+        PaymentControllerTest.class
 })
 public class ControllerTestSuite {
     // This class serves as a holder for the test suite configuration

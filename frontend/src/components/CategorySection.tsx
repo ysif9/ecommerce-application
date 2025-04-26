@@ -21,7 +21,7 @@ export const CategorySection = ({ categories }: CategoryProps) => {
         
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6">
           {displayCategories.map((category) => (
-            <Link key={category} to={`/categories/${category.toLowerCase()}`} className="group">
+              <Link key={category} to={`/products`} className="group">
               <div className="bg-white rounded-lg shadow-sm p-6 h-full flex flex-col items-center justify-center text-center transition-all hover:shadow-md hover:-translate-y-1 border border-gray-200">
                 <h3 className="text-lg font-semibold mb-2 group-hover:text-primary transition-colors">{category}</h3>
                 <Button variant="link" className="text-sm group-hover:text-primary">

@@ -104,7 +104,7 @@ const ProductDetailPage = () => {
           <ChevronRight className="mx-2 h-4 w-4" />
           <Link to="/products" className="hover:text-primary">Products</Link>
           <ChevronRight className="mx-2 h-4 w-4" />
-          <Link to={`/categories/${product.category.toLowerCase()}`} className="hover:text-primary">
+          <Link to={`/products`} className="hover:text-primary">
             {product.category}
           </Link>
           <ChevronRight className="mx-2 h-4 w-4" />

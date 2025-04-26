@@ -15,7 +15,8 @@ import org.junit.platform.suite.api.Suite;
         CartServiceTest.class,
         OrderServiceTest.class,
         ProductServiceTest.class,
-        UserServiceTest.class
+        UserServiceTest.class,
+        PaymentServiceTest.class
 })
 public class ServiceTestSuite {
     // This class serves as a holder for the test suite configuration

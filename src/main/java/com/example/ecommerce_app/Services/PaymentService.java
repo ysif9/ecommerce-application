@@ -3,12 +3,12 @@ package com.example.ecommerce_app.Services;
 import com.example.ecommerce_app.Model.*;
 import com.example.ecommerce_app.Repositories.PaymentRepository;
 import com.example.ecommerce_app.Repositories.UserOrderRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class PaymentService {
@@ -40,7 +40,7 @@ public class PaymentService {
 
         // Simulate payment success
         boolean success = true;
-        payment.setStatus(success ? PaymentStatus.COMPLETED : PaymentStatus.FAILED);
+        payment.setStatus(PaymentStatus.COMPLETED);
 
         return paymentRepository.save(payment);
     }

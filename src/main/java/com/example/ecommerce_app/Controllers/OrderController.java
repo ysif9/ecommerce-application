@@ -6,6 +6,7 @@ import com.example.ecommerce_app.Model.UserOrder;
 import com.example.ecommerce_app.Services.AuthService;
 import com.example.ecommerce_app.Services.CartService;
 import com.example.ecommerce_app.Services.OrderService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,8 +56,9 @@ public class OrderController {
 
     // DELETE /api/orders/{id}
     @DeleteMapping("/{id}")
-    public void deleteOrder(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteOrder(@PathVariable Long id) {
         orderService.deleteOrder(id);
+        return ResponseEntity.ok().build();
     }
 
 

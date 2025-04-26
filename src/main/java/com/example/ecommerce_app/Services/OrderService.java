@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class OrderService {
@@ -69,10 +70,18 @@ public class OrderService {
     public void deleteOrder(Long id) {
         /// @check for any caused issues
         //check if payment exists first
-        Payment payment = paymentService.getPaymentByOrderId(id);
-        if (payment != null) {
-            paymentRepository.deleteByOrder_OrderID(id);
+        try {
+            Payment payment = paymentService.getPaymentByOrderId(id);
+            if (payment != null) {
+                paymentRepository.deleteByOrder_OrderID(id);
+            }
+        } catch (NoSuchElementException e) {
+            // No payment found for this order, continue with order deletion
         }
-        orderRepo.deleteById(id);
+
+        // Check if order exists before trying to delete it
+        if (orderRepo.existsById(id)) {
+            orderRepo.deleteById(id);
+        }
     }
 }
