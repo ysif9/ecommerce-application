@@ -1,10 +1,8 @@
 package com.example.ecommerce_app.Services;
 
-import com.example.ecommerce_app.Model.CartItem;
-import com.example.ecommerce_app.Model.LocalUser;
-import com.example.ecommerce_app.Model.Product;
-import com.example.ecommerce_app.Model.UserOrder;
+import com.example.ecommerce_app.Model.*;
 import com.example.ecommerce_app.Repositories.OrderItemRepository;
+import com.example.ecommerce_app.Repositories.PaymentRepository;
 import com.example.ecommerce_app.Repositories.UserOrderRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,7 +17,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.when;
 
 @AutoConfigureMockMvc
@@ -36,6 +34,9 @@ public class OrderServiceTest {
 
     @Mock
     private PaymentService paymentService;
+
+    @Mock
+    private PaymentRepository paymentRepository;
 
     @BeforeEach
     public void setUp() {
@@ -97,5 +98,32 @@ public class OrderServiceTest {
         Long id = 5L;
         orderService.deleteOrder(id);
         Assertions.assertFalse(orderRepo.existsById(id));
+    }
+
+    @Test
+    public void testDeleteOrder_not_exist(){
+        orderService.deleteOrder(1L);
+        Assertions.assertFalse(orderRepo.existsById(1L));
+    }
+
+    @Test
+    public void testDeleteOrder_with_payment() {
+        // Arrange
+        Long orderId = 10L;
+        Payment payment = new Payment();
+        UserOrder order = new UserOrder();
+        order.setOrderID(orderId);
+        payment.setOrder(order);
+
+        // Mock payment service to return a payment
+        when(paymentService.getPaymentByOrderId(orderId)).thenReturn(payment);
+        when(orderRepo.existsById(orderId)).thenReturn(true);
+
+        // Act
+        orderService.deleteOrder(orderId);
+
+        // Assert
+        verify(paymentRepository).deleteByOrder_OrderID(orderId);
+        verify(orderRepo).deleteById(orderId);
     }
 }
