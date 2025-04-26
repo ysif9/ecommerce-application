@@ -126,4 +126,15 @@ public class OrderServiceTest {
         verify(paymentRepository).deleteByOrder_OrderID(orderId);
         verify(orderRepo).deleteById(orderId);
     }
+    @Test
+    public void testGetOrdersByUserWithStatus() {
+        LocalUser user = new LocalUser();
+        String status = "completed";
+        List<UserOrder> orders = List.of(new UserOrder());
+        when(orderRepo.findByUserAndStatus(user, status)).thenReturn(orders);
+
+        List<UserOrder> result = orderService.getOrdersByUser(user, status);
+        assertEquals(orders, result);
+    }
+
 }
